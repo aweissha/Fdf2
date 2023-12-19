@@ -2,6 +2,7 @@ NAME = Fdf
 
 LIBFT = Libft/libft.a
 FT_PRINTF = ft_printf/libftprintf.a
+GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 SRC_DIR = src/
 
 CC = gcc
@@ -12,6 +13,7 @@ RM = rm -f
 
 SRCS = 		$(SRC_DIR)fdf.c \
 			$(SRC_DIR)errors.c \
+			$(SRC_DIR)read_file.c \
 
 
 OBJS = $(SRCS:.c=.o)
@@ -20,7 +22,8 @@ OBJS = $(SRCS:.c=.o)
 	$(CC) $(CFLAGS) -Imlx -c $< -o $@
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJS) libmlx.a $(LIBFT) $(FT_PRINTF) -o $(NAME)
+	$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJS) libmlx.a $(LIBFT) $(FT_PRINTF) $(GETNEXTLINE) -o $(NAME)
+	# cc $(MLX_FLAGS) $(OBJS) libmlx.a $(LIBFT) $(FT_PRINTF) $(GETNEXTLINE) -g
 
 all: $(NAME)
 
