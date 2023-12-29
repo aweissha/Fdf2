@@ -14,6 +14,7 @@ RM = rm -f
 SRCS = 		$(SRC_DIR)fdf.c \
 			$(SRC_DIR)errors.c \
 			$(SRC_DIR)read_file.c \
+			$(SRC_DIR)draw.c \
 
 
 OBJS = $(SRCS:.c=.o)
