@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 11:39:15 by aweissha          #+#    #+#             */
-/*   Updated: 2023/12/29 14:51:04 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:56:12 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ float	mod(float i)
 	return (i < 0) ? -i : i;
 }
 
-void	ft_bresenham(t_dot a, t_dot b, t_fdf *fdf)
+void	ft_draw_line(t_dot a, t_dot b, t_fdf *fdf)
 {
 	float	x_step;
 	float	y_step;
@@ -46,56 +46,6 @@ void	ft_bresenham(t_dot a, t_dot b, t_fdf *fdf)
 		a.x = a.x + x_step;
 		a.y = a.y + y_step;
 	}
-}
-
-static void	ft_rotate_x(float *y, float *z, double x_angle)
-{
-	float	prev_y;
-
-	prev_y = *y;
-	*y = prev_y * cos(x_angle) + *z * sin(x_angle);
-	*z = prev_y * -sin(x_angle) + *z * cos(x_angle);
-
-
-
-
-	
-	// float	prev_y;
-
-	// prev_y = *y;
-	// *y = prev_y * cos(x_angle) + *z * sin(x_angle);
-
-	// *z = prev_y * sin(x_angle) + *z * cos(x_angle);
-	
-}
-
-static void	ft_rotate_y(float *x, float *z, double y_angle)
-{
-
-
-	int	prev_x;
-
-	prev_x = *x;
-	*x = prev_x * cos(y_angle) + *z * sin(y_angle);
-	*z = prev_x * -sin(y_angle) + *z * cos(y_angle);
-
-	
-	// float	prev_x;
-
-	// prev_x = *x;
-	// *x = prev_x * cos(y_angle) + *z * sin(y_angle);
-
-	// *z = prev_x * sin(y_angle) + *z * cos(y_angle);
-}
-
-static void	ft_rotate_z(float *x, float *y, double z_angle)
-{
-	t_dot	prev;
-
-	prev.x = *x;
-	prev.y = *y;
-	*x = prev.x * cos(z_angle) - prev.y * sin(z_angle);
-	*y = prev.x * sin(z_angle) + prev.y * cos(z_angle);
 }
 
 t_dot	ft_make_dot(int	x, int y, t_fdf *fdf)
@@ -126,6 +76,21 @@ t_dot	ft_make_dot(int	x, int y, t_fdf *fdf)
 	return (dot);
 }
 
+void	ft_instructions(t_fdf *fdf)
+{
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 20, 0xffffff, "Left Arrow:	Move Left");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 40, 0xffffff, "Right Arrow:	Move Right");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 60, 0xffffff, "Up Arrow:	Move Up");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 80, 0xffffff, "Down Arrow:	Move Down");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 100, 0xffffff, "W/S:	X-Rotation");	
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 120, 0xffffff, "A/D:	Y-Rotation");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 140, 0xffffff, "X/C:	Z-Rotation");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 160, 0xffffff, "+/-:	Zoom");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 180, 0xffffff, "J/K:	Z-Scaling");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 10, 200, 0xffffff, "I/P:	Isometric/Parallel");
+	mlx_string_put(fdf->mlx_ptr, fdf->mlx_window, 850, 1000, 0x009999, "@aweissha-studios");
+}
+
 void	ft_draw_map(t_fdf *fdf)
 {
 	int		x;
@@ -138,12 +103,13 @@ void	ft_draw_map(t_fdf *fdf)
 		while (x < fdf->map->width)
 		{
 			if (x < (fdf->map->width - 1))
-				ft_bresenham(ft_make_dot(x, y, fdf), ft_make_dot(x + 1, y, fdf), fdf);
+				ft_draw_line(ft_make_dot(x, y, fdf), ft_make_dot(x + 1, y, fdf), fdf);
 			if (y < (fdf->map->height - 1))
-				ft_bresenham(ft_make_dot(x, y, fdf), ft_make_dot(x, y + 1, fdf), fdf);
+				ft_draw_line(ft_make_dot(x, y, fdf), ft_make_dot(x, y + 1, fdf), fdf);
 			x++;
 		}
 		y++;
 	}
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->mlx_window, fdf->mlx_img, 0, 0);
+	ft_instructions(fdf);
 }

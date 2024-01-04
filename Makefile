@@ -15,6 +15,10 @@ SRCS = 		$(SRC_DIR)fdf.c \
 			$(SRC_DIR)errors.c \
 			$(SRC_DIR)read_file.c \
 			$(SRC_DIR)draw.c \
+			$(SRC_DIR)init.c \
+			$(SRC_DIR)keystrokes.c \
+			$(SRC_DIR)hooks.c \
+			$(SRC_DIR)draw_utils.c \
 
 
 OBJS = $(SRCS:.c=.o)

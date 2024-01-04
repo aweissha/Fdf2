@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 10:29:38 by aweissha          #+#    #+#             */
-/*   Updated: 2023/12/26 11:21:54 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/04 10:31:22 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	ft_count_lines(char *filename, t_fdf *fdf)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		ft_free_fdf(fdf);		
 		ft_error("Error opening the file");		
-		ft_free_fdf(fdf);
 	}
 	i = 1;
 	bytes_read = 1;		
@@ -32,8 +32,8 @@ int	ft_count_lines(char *filename, t_fdf *fdf)
 		bytes_read = read(fd, buffer, 1);
 		if (bytes_read == -1)
 		{
+			ft_free_fdf(fdf);				
 			ft_error("Error reading the file");
-			ft_free_fdf(fdf);		
 		}
 		if (bytes_read == 0)
 			break ;
@@ -42,10 +42,10 @@ int	ft_count_lines(char *filename, t_fdf *fdf)
 	}
 	if (close(fd) == -1)
 	{
+		ft_free_fdf(fdf);		
 		ft_error("Error closing the file");		
-		ft_free_fdf(fdf);
 	}
-	return (i);
+	return (i - 1);
 }
 
 int	ft_count_width(char *filename, t_fdf *fdf)
@@ -58,33 +58,43 @@ int	ft_count_width(char *filename, t_fdf *fdf)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		ft_free_fdf(fdf);			
 		ft_error("Error opening the file");
-		ft_free_fdf(fdf);	
 	}
-	line = get_next_line(fd);	
+	line = get_next_line(fd);
+	if (line == NULL)
+	{
+		ft_free_fdf(fdf);			
+		ft_error("Get_next_line failed");
+	}
 	i = 0;
 	count = 0;
-	while (line[i] != '\0')
+	while (line[i] != '\0' && line[i] != '\n')
 	{
-		if ((ft_isdigit(line[i]) == 1) && (ft_isdigit(line[i + 1]) == 0))
+		if (line[i] != ' ' && (line[i + 1] == ' ' || line[i + 1] == '\n'))
 			count++;
 		i++;
 	}
 	free(line);
 	if (close(fd) == -1)
 	{
+		ft_free_fdf(fdf);	
 		ft_error("Error closing the file");		
-		ft_free_fdf(fdf);
 	}
 	return (count);
 }
 
-void	ft_fill_x(t_map *map, int *matrix, char *line)
+void	ft_fill_map(t_fdf *fdf, t_map *map, int *matrix, char *line)
 {
 	int		i;
 	char	**array;
 
 	array = ft_split(line, ' ');
+	if (array == NULL)
+	{
+		ft_free_fdf(fdf);		
+		ft_error("Memory allocation for matrix failed");			
+	}
 	i = 0;
 	while (i < map->width)
 	{
@@ -95,45 +105,62 @@ void	ft_fill_x(t_map *map, int *matrix, char *line)
 	free(array);
 }
 
-void	ft_create_matrix(t_map *map, int fd, t_fdf *fdf)
+void	ft_read_lines(t_map *map, int fd, t_fdf *fdf)
 {
 	int		i;
 	char	*line;
 
-	map->matrix = malloc(sizeof(int *) * (map->height + 1));
-	if (map->matrix == NULL)
-	{
-		ft_error("Memory allocation for matrix failed");
-		ft_free_fdf(fdf);
-	}
 	i = 0;
 	while (i < map->height)
 	{
 		line = get_next_line(fd);
+		if (line == NULL)
+		{
+			ft_free_fdf(fdf);			
+			ft_error("Get_next_line failed");
+		}
 		(map->matrix)[i] = malloc(sizeof(int) * (map->width));
 		if ((map->matrix)[i] == NULL)
 		{
+			ft_free_fdf(fdf);			
 			ft_error("Memory allocation for matrix failed (2)");
-			ft_free_fdf(fdf);
 		}
-		ft_fill_x(map, (map->matrix)[i], line);
+		ft_fill_map(fdf, map, (map->matrix)[i], line);
 		free(line);
 		i++;
 	}
 	(map->matrix)[i] = NULL;
 }
 
-void	ft_fill_map(t_map *map, t_fdf *fdf)
+void	ft_create_matrix(t_map *map, int fd, t_fdf *fdf)
+{
+	map->matrix = malloc(sizeof(int *) * (map->height + 1));
+	if (map->matrix == NULL)
+	{
+		ft_free_fdf(fdf);
+		ft_error("Memory allocation for matrix failed");
+	}
+	ft_read_lines(map, fd, fdf);
+}
+
+void	ft_read_file(t_fdf *fdf, char *filename)
 {
 	int	fd;
+	t_map *map = fdf->map;
 
-	map->height = ft_count_lines("42.fdf", fdf);
-	map->width = ft_count_width("42.fdf", fdf);
-	fd = open("42.fdf", O_RDONLY);
+	map->height = ft_count_lines(filename, fdf);
+	map->width = ft_count_width(filename, fdf);
+	
+	//testing
+	// printf("height: %d\n", map->height);
+	// printf("width: %d\n", map->width);
+	// exit(0);
+	
+	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		ft_free_fdf(fdf);		
 		ft_error("Error opening the file");		
-		ft_free_fdf(fdf);
 	}
 	ft_create_matrix(map, fd, fdf);
 	if (close(fd) == -1)
