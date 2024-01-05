@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:33:38 by aweissha          #+#    #+#             */
-/*   Updated: 2023/12/19 16:12:53 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:37:34 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static char	*extract_line(char *line)
 	return (str);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int i)
 {
 	static char	*str;
 	char		*line;
@@ -128,6 +128,8 @@ char	*get_next_line(int fd)
 	}
 	str = update_str(line);
 	line = extract_line(line);
+	if (i == 1)
+		str = NULL;
 	return (line);
 }
 

@@ -6,70 +6,89 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 11:39:15 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/03 15:56:12 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/05 17:00:18 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-#define MAX(a, b) (a > b ? a : b)
+float	max(float a, float b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
 
 float	mod(float i)
 {
-	return (i < 0) ? -i : i;
+	if (i < 0)
+		return (-i);
+	else
+		return (i);
+}
+
+int	ft_calc_color(t_dot a, t_dot b, float max)
+{
+	float	percent;
+	int		red;
+	int		green;
+	int		blue;
+	int 	color;
+
+	if (mod(b.x - a.x) >= mod(b.y - a.y))
+		percent = (max - mod(b.x - a.x)) / max;
+	else
+		percent = (max - mod(b.y - a.y)) / max;
+	red = ((a.color >> 16) & 0xff) + percent * (((b.color >> 16) & 0xff)-((a.color >> 16) & 0xff));
+	green = ((a.color >> 8) & 0xff) + percent * (((b.color >> 8) & 0xff)-((a.color >> 8) & 0xff));	
+	blue = (a.color & 0xff) + percent * ((b.color & 0xff)-(a.color & 0xff));
+	color = (red << 16) + (green << 8) + blue;			
+	return (color);
 }
 
 void	ft_draw_line(t_dot a, t_dot b, t_fdf *fdf)
 {
 	float	x_step;
 	float	y_step;
-	int		max;
-	int		color;
-	
-	//Color
-	if (a.color == 0xff0000 || b.color == 0xff0000)
-		color = 0xff0000;
-	else
-		color = 0xffffff;
+	float	max_step;
 
 	// Calculate steps
-	x_step = (float)b.x - (float)a.x;
-	y_step = (float)b.y - (float)a.y;
+	x_step = b.x - a.x;
+	y_step = b.y - a.y;
 	
-	max = MAX(mod(x_step), mod(y_step));
-	x_step /= max;
-	y_step /= max;
+	max_step = max(mod(x_step), mod(y_step));
+	x_step /= max_step;
+	y_step /= max_step;
 
 	while ((int)(a.x - b.x) != 0 || (int)(a.y - b.y) != 0)
 	{
-		ft_put_pixel(fdf, a.x, a.y, color);
+		ft_put_pixel(fdf, a.x, a.y, ft_calc_color(a, b, max_step));
 		a.x = a.x + x_step;
 		a.y = a.y + y_step;
 	}
 }
 
-t_dot	ft_make_dot(int	x, int y, t_fdf *fdf)
+t_dot	ft_edit_dot(t_dot dot, t_fdf *fdf)
 {
-	t_dot	dot;
+	// zoom
+	dot.x *= fdf->zoom;
+	dot.y *= fdf->zoom;
+	dot.z *= fdf->zoom;
 
-	dot.z = (fdf->map->matrix)[y][x] * fdf->z_scale;
-	if (dot.z != 0)
-		dot.color = 0xff0000;
-	else
-		dot.color = 0xffffff;
+	// z-scaling
+	dot.z *= fdf->z_scale;	
 
-	dot.x = x;
-	dot.y = y;
+	// bring the map to the middle
+	dot.x -= (fdf->map->width * fdf->zoom) / 2;
+	dot.y -= (fdf->map->height * fdf->zoom) / 2;
 
 	// Rotate around axis
 	ft_rotate_x(&dot.y, &dot.z, fdf->x_angle);
 	ft_rotate_y(&dot.x, &dot.z, fdf->y_angle);
 	ft_rotate_z(&dot.x, &dot.y, fdf->z_angle);
 
-	
-	// zoom + shift
-	dot.x *= fdf->zoom;
-	dot.y *= fdf->zoom;
+	// shift
 	dot.x += fdf->shift_x;
 	dot.y += fdf->shift_y;
 
@@ -103,9 +122,9 @@ void	ft_draw_map(t_fdf *fdf)
 		while (x < fdf->map->width)
 		{
 			if (x < (fdf->map->width - 1))
-				ft_draw_line(ft_make_dot(x, y, fdf), ft_make_dot(x + 1, y, fdf), fdf);
+				ft_draw_line(ft_edit_dot(fdf->map->matrix[y][x], fdf), ft_edit_dot(fdf->map->matrix[y][x + 1], fdf), fdf);
 			if (y < (fdf->map->height - 1))
-				ft_draw_line(ft_make_dot(x, y, fdf), ft_make_dot(x, y + 1, fdf), fdf);
+				ft_draw_line(ft_edit_dot(fdf->map->matrix[y][x], fdf), ft_edit_dot(fdf->map->matrix[y + 1][x], fdf), fdf);
 			x++;
 		}
 		y++;

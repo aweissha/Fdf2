@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 09:56:34 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/03 17:29:06 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/05 17:01:51 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	ft_init_fdf(t_fdf *fdf)
 	fdf->mlx_img = NULL;
 	fdf->map = NULL;
 	fdf->data_addr = NULL;
-	fdf->zoom = 10;
-	fdf->shift_x = 350;
-	fdf->shift_y = 350;
+	fdf->zoom = 20;
+	fdf->shift_x = WIDTH / 2;
+	fdf->shift_y = HEIGHT / 2;
 	fdf->x_angle = -0.458393;
 	fdf->y_angle = -0.439823;
 	fdf->z_angle = 0.691150;
@@ -70,7 +70,7 @@ void	ft_init_dot(t_dot *dot)
 	dot->x = 0;
 	dot->y = 0;
 	dot->z = 0;
-	dot->color = 0x000000;
+	dot->color = 0xffffff;
 }
 
 void	ft_init_map(t_fdf *fdf)

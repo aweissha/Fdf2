@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:35:01 by aweissha          #+#    #+#             */
-/*   Updated: 2023/12/19 16:11:50 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:32:20 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 10000
 # endif
 
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
 
-char	*get_next_line(int fd);
+char	*get_next_line(int fd, int i);
 int		ft_strlen(const char *s);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strchr_mod(char *s, int c);

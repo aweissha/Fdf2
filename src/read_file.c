@@ -6,11 +6,56 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 10:29:38 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/04 10:31:22 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:52:12 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
+
+static int	is_in_base(int base, char c)
+{
+	int		i;
+	char	base_str[] = "0123456789ABCDEF";
+	char	base_str2[] = "0123456789abcdef";
+	
+	i = 0;
+	while (i < base)
+	{
+		if (c == base_str[i] || c == base_str2[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_atoi_base(const char *str, int str_base)
+{
+	int	i;
+	int	minus_counter;
+	int	number;
+
+	i = 0;
+	minus_counter = 1;
+	
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			minus_counter = minus_counter * (-1);
+		i++;
+	}
+	while (is_in_base(str_base, str[i]) == 1
+		&& str[i] != '\0')
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			number = number * str_base + str[i] - 48;
+		else if (str[i] >= 'A' && str[i] <= 'F')
+			number = number * str_base + str[i] - 65 + 10;
+		else if (str[i] >= 'a' && str[i] <= 'f')
+			number = number * str_base + str[i] - 97 + 10;
+		i++;
+	}
+	return (number * minus_counter);
+}
 
 int	ft_count_lines(char *filename, t_fdf *fdf)
 {
@@ -61,7 +106,7 @@ int	ft_count_width(char *filename, t_fdf *fdf)
 		ft_free_fdf(fdf);			
 		ft_error("Error opening the file");
 	}
-	line = get_next_line(fd);
+	line = get_next_line(fd, 1);
 	if (line == NULL)
 	{
 		ft_free_fdf(fdf);			
@@ -84,7 +129,23 @@ int	ft_count_width(char *filename, t_fdf *fdf)
 	return (count);
 }
 
-void	ft_fill_map(t_fdf *fdf, t_map *map, int *matrix, char *line)
+static void	ft_get_color(t_dot *dot, char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == ',')
+		{
+			dot->color = ft_atoi_base(&str[i + 3], 16);
+			break ;
+		}
+		i++;
+	}
+}
+
+void	ft_fill_map(t_fdf *fdf, t_map *map, t_dot *matrix, char *line)
 {
 	int		i;
 	char	**array;
@@ -98,8 +159,10 @@ void	ft_fill_map(t_fdf *fdf, t_map *map, int *matrix, char *line)
 	i = 0;
 	while (i < map->width)
 	{
-		matrix[i] = ft_atoi(array[i]);
-		free(array[i]);		
+		ft_init_dot(&matrix[i]);
+		matrix[i].z = ft_atoi(array[i]);
+		ft_get_color(&matrix[i], array[i]);
+		free(array[i]);
 		i++;
 	}
 	free(array);
@@ -113,13 +176,13 @@ void	ft_read_lines(t_map *map, int fd, t_fdf *fdf)
 	i = 0;
 	while (i < map->height)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(fd, 0);
 		if (line == NULL)
 		{
 			ft_free_fdf(fdf);			
 			ft_error("Get_next_line failed");
 		}
-		(map->matrix)[i] = malloc(sizeof(int) * (map->width));
+		(map->matrix)[i] = malloc(sizeof(t_dot) * (map->width));
 		if ((map->matrix)[i] == NULL)
 		{
 			ft_free_fdf(fdf);			
@@ -132,15 +195,35 @@ void	ft_read_lines(t_map *map, int fd, t_fdf *fdf)
 	(map->matrix)[i] = NULL;
 }
 
+static void	ft_fill_dots(t_map *map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			map->matrix[i][j].y = i;			
+			map->matrix[i][j].x = j;
+			j++;
+		}
+		i++;
+	}
+}
+
 void	ft_create_matrix(t_map *map, int fd, t_fdf *fdf)
 {
-	map->matrix = malloc(sizeof(int *) * (map->height + 1));
+	map->matrix = malloc(sizeof(t_dot *) * (map->height + 1));
 	if (map->matrix == NULL)
 	{
 		ft_free_fdf(fdf);
 		ft_error("Memory allocation for matrix failed");
 	}
 	ft_read_lines(map, fd, fdf);
+	ft_fill_dots(map);
 }
 
 void	ft_read_file(t_fdf *fdf, char *filename)
@@ -150,12 +233,6 @@ void	ft_read_file(t_fdf *fdf, char *filename)
 
 	map->height = ft_count_lines(filename, fdf);
 	map->width = ft_count_width(filename, fdf);
-	
-	//testing
-	// printf("height: %d\n", map->height);
-	// printf("width: %d\n", map->width);
-	// exit(0);
-	
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 15:13:26 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/04 09:55:36 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:59:23 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_map
 {
 	int		width;
 	int 	height;
-	int	**matrix;
+	t_dot	**matrix;
 }	t_map;
 
 typedef struct s_fdf
@@ -71,17 +71,15 @@ typedef struct s_fdf
 	int		size_line;
 	int		endian;
 	t_map	*map;
-	int		zoom;
+	float	zoom;
 	double	x_angle;
 	double	y_angle;
 	double	z_angle;
 	float	z_scale;
-	int		shift_x;
-	int		shift_y;
+	float	shift_x;
+	float	shift_y;
 	int		isometric;
 }	t_fdf;
-
-
 
 t_fdf	*ft_create_fdf(char *filename);
 void	ft_free_fdf(t_fdf *fdf);
@@ -90,7 +88,7 @@ void	ft_zoom(int keycode, t_fdf *fdf);
 void	ft_put_pixel(t_fdf *fdf, float x, float y, int color);
 int		ft_count_lines(char *filename, t_fdf *fdf);
 int		ft_count_width(char *filename, t_fdf *fdf);
-void	ft_fill_map(t_fdf *fdf, t_map *map, int *matrix, char *line);
+void	ft_fill_map(t_fdf *fdf, t_map *map, t_dot *matrix, char *line);
 void	ft_create_matrix(t_map *map, int fd, t_fdf *fdf);
 void	ft_read_lines(t_map *map, int fd, t_fdf *fdf);
 void	ft_read_file(t_fdf *fdf, char *filename);
