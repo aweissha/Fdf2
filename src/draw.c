@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 11:39:15 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/05 17:00:18 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/07 15:45:57 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	ft_draw_line(t_dot a, t_dot b, t_fdf *fdf)
 	x_step /= max_step;
 	y_step /= max_step;
 
+	if ((int)(a.x - b.x) == 0 && (int)(a.y - b.y) == 0)
+		ft_put_pixel(fdf, a.x, a.y, a.color);
 	while ((int)(a.x - b.x) != 0 || (int)(a.y - b.y) != 0)
 	{
 		ft_put_pixel(fdf, a.x, a.y, ft_calc_color(a, b, max_step));
@@ -77,7 +79,7 @@ t_dot	ft_edit_dot(t_dot dot, t_fdf *fdf)
 	dot.z *= fdf->zoom;
 
 	// z-scaling
-	dot.z *= fdf->z_scale;	
+	dot.z *= fdf->z_scale;
 
 	// bring the map to the middle
 	dot.x -= (fdf->map->width * fdf->zoom) / 2;
@@ -115,6 +117,7 @@ void	ft_draw_map(t_fdf *fdf)
 	int		x;
 	int		y;
 	
+	ft_bzero(fdf->data_addr, (WIDTH * (fdf->bpp / 8) * HEIGHT));
 	y = 0;
 	while (y < fdf->map->height)
 	{

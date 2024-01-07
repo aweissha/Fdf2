@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:35:01 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/04 14:32:20 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:08:56 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10000
+#  define BUFFER_SIZE 10
 # endif
 
 # include <unistd.h>

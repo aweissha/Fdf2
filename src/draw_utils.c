@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:38:18 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/05 16:59:30 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/07 10:48:06 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_put_pixel(t_fdf *fdf, float x, float y, int color)
 	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
 	{
 		i = ((int)y * fdf->size_line) + ((int)x * (fdf->bpp / 8));
-		*(unsigned int *)(fdf->data_addr + i) = color;		
+		*(unsigned int *)(fdf->data_addr + i) = color;
 	}
 }
 

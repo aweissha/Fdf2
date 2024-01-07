@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 15:13:26 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/05 13:59:23 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:13:59 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_init(t_fdf *fdf, char *filename);
 void	ft_init_fdf(t_fdf *fdf);
 void	ft_init_dot(t_dot *dot);
 void	ft_init_map(t_fdf *fdf);
-void	ft_free_map(t_map *map);
+void	ft_free_map(t_fdf *fdf);
 void	ft_shift(int keycode, t_fdf *fdf);
 void	ft_zoom(int keycode, t_fdf *fdf);
 void	ft_rotate(int keycode, t_fdf *fdf);
@@ -106,7 +106,7 @@ void	ft_scale_z(int keycode, t_fdf *fdf);
 void	ft_change_projection(int keycode, t_fdf *fdf);
 void	ft_hook_control(t_fdf *fdf);
 int 	ft_key_hook(int keycode, t_fdf *fdf);
-void	ft_replace_img(t_fdf *fdf);
+// void	ft_replace_img(t_fdf *fdf);
 void	ft_put_pixel(t_fdf *fdf, float x, float y, int color);
 void	ft_rotate_x(float *y, float *z, double x_angle);
 void	ft_rotate_y(float *x, float *z, double y_angle);

@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 10:29:38 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/05 13:52:12 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/07 19:13:53 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,14 @@ int	ft_count_lines(char *filename, t_fdf *fdf)
 		if (buffer[0] == '\n')
 			i++;
 	}
+	if (buffer[0] == '\n')
+		i--;
 	if (close(fd) == -1)
 	{
 		ft_free_fdf(fdf);		
 		ft_error("Error closing the file");		
 	}
-	return (i - 1);
+	return (i);
 }
 
 int	ft_count_width(char *filename, t_fdf *fdf)
@@ -109,7 +111,7 @@ int	ft_count_width(char *filename, t_fdf *fdf)
 	line = get_next_line(fd, 1);
 	if (line == NULL)
 	{
-		ft_free_fdf(fdf);			
+		ft_free_fdf(fdf);		
 		ft_error("Get_next_line failed");
 	}
 	i = 0;
@@ -124,7 +126,7 @@ int	ft_count_width(char *filename, t_fdf *fdf)
 	if (close(fd) == -1)
 	{
 		ft_free_fdf(fdf);	
-		ft_error("Error closing the file");		
+		ft_error("Error closing the file");
 	}
 	return (count);
 }
@@ -179,13 +181,13 @@ void	ft_read_lines(t_map *map, int fd, t_fdf *fdf)
 		line = get_next_line(fd, 0);
 		if (line == NULL)
 		{
-			ft_free_fdf(fdf);			
+			ft_free_fdf(fdf);
 			ft_error("Get_next_line failed");
 		}
 		(map->matrix)[i] = malloc(sizeof(t_dot) * (map->width));
 		if ((map->matrix)[i] == NULL)
 		{
-			ft_free_fdf(fdf);			
+			ft_free_fdf(fdf);
 			ft_error("Memory allocation for matrix failed (2)");
 		}
 		ft_fill_map(fdf, map, (map->matrix)[i], line);
@@ -237,7 +239,7 @@ void	ft_read_file(t_fdf *fdf, char *filename)
 	if (fd == -1)
 	{
 		ft_free_fdf(fdf);		
-		ft_error("Error opening the file");		
+		ft_error("Error opening the file");
 	}
 	ft_create_matrix(map, fd, fdf);
 	if (close(fd) == -1)
