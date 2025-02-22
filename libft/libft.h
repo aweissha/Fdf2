@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:03:14 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/04 11:51:16 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/09 13:41:11 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+int		ft_atoi_base(const char *str, int str_base);
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);

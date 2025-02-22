@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:33:38 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/07 17:12:58 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:15:45 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	*get_next_line(int fd, int i)
 	if (i == 1)
 	{
 		free(str);
-		str = NULL;		
+		str = NULL;
 	}
 	return (line);
 }

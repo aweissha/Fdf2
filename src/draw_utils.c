@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:38:18 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/07 10:48:06 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:05:09 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,14 @@ void	ft_rotate_y(float *x, float *z, double y_angle)
 	x_start = *x;
 	*x = x_start * cos(y_angle) + *z * sin(y_angle);
 	*z = x_start * -sin(y_angle) + *z * cos(y_angle);
-
 }
 
 void	ft_rotate_z(float *x, float *y, double z_angle)
 {
 	t_dot	start;
 
-	start.y = *y;	
+	start.y = *y;
 	start.x = *x;
-
 	*y = start.x * sin(z_angle) + start.y * cos(z_angle);
 	*x = start.x * cos(z_angle) - start.y * sin(z_angle);
 }

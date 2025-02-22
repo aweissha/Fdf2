@@ -6,7 +6,7 @@ GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 SRC_DIR = src/
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 MLX_FLAGS = -framework OpenGL -framework AppKit
 RM = rm -f
 
@@ -19,6 +19,8 @@ SRCS = 		$(SRC_DIR)fdf.c \
 			$(SRC_DIR)keystrokes.c \
 			$(SRC_DIR)hooks.c \
 			$(SRC_DIR)draw_utils.c \
+			$(SRC_DIR)read_utils.c \
+			$(SRC_DIR)utils.c \
 
 
 OBJS = $(SRCS:.c=.o)
@@ -28,7 +30,6 @@ OBJS = $(SRCS:.c=.o)
 
 $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJS) libmlx.a $(LIBFT) $(FT_PRINTF) $(GETNEXTLINE) -o $(NAME)
-	# cc $(MLX_FLAGS) $(OBJS) libmlx.a $(LIBFT) $(FT_PRINTF) $(GETNEXTLINE) -g
 
 all: $(NAME)
 

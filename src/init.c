@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 09:56:34 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/07 18:39:25 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:53:49 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_init(t_fdf *fdf, char *filename)
 	if (fdf->mlx_ptr == NULL)
 	{
 		ft_free_fdf(fdf);
-		ft_error("mlx connection failed");		
+		ft_error("mlx connection failed");
 	}
 	fdf->mlx_window = mlx_new_window(fdf->mlx_ptr, WIDTH, HEIGHT, filename);
 	if (fdf->mlx_window == NULL)
@@ -53,7 +53,8 @@ void	ft_init(t_fdf *fdf, char *filename)
 		ft_free_fdf(fdf);
 		ft_error("initializing image failed");
 	}
-	fdf->data_addr = mlx_get_data_addr(fdf->mlx_img, &fdf->bpp, &fdf->size_line, &fdf->endian);
+	fdf->data_addr = mlx_get_data_addr(fdf->mlx_img, &fdf->bpp,
+			&fdf->size_line, &fdf->endian);
 	ft_init_map(fdf);
 }
 
@@ -77,7 +78,7 @@ void	ft_init_fdf(t_fdf *fdf)
 t_fdf	*ft_create_fdf(char *filename)
 {
 	t_fdf	*fdf;
-	
+
 	fdf = malloc(sizeof(t_fdf));
 	if (fdf == NULL)
 		ft_error("allocation of memory for t_fdf failed");

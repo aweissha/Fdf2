@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/13 10:35:49 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/09 14:37:44 by aweissha         ###   ########.fr       */
+/*   Created: 2024/01/09 11:03:56 by aweissha          #+#    #+#             */
+/*   Updated: 2024/01/12 10:07:31 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-int	main(int argc, char **argv)
+float	max(float a, float b)
 {
-	t_fdf	*fdf;
-
-	if (argc == 2)
-	{
-		fdf = ft_create_fdf(argv[1]);
-		ft_read_file(fdf, argv[1]);
-		ft_set_zoom(fdf);
-		ft_draw_map(fdf);
-		ft_hook_control(fdf);
-		mlx_loop(fdf->mlx_ptr);
-		ft_free_fdf(fdf);
-	}
+	if (a > b)
+		return (a);
 	else
-		ft_error("wrong number of arguments");
-	return (EXIT_SUCCESS);
+		return (b);
+}
+
+float	mod(float i)
+{
+	if (i < 0)
+		return (-i);
+	else
+		return (i);
+}
+
+int	min(int a, int b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
+void	ft_set_zoom(t_fdf *fdf)
+{
+	fdf->zoom = min(WIDTH / fdf->map->width / 2,
+			HEIGHT / fdf->map->height / 2);
 }

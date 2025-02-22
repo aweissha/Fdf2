@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:22:01 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/07 10:19:45 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/12 10:12:44 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ void	ft_shift(int keycode, t_fdf *fdf)
 {
 	if (keycode == ARROW_UP)
 		fdf->shift_y -= 10;
-	if (keycode == ARROW_DOWN)
+	else if (keycode == ARROW_DOWN)
 		fdf->shift_y += 10;
-	if (keycode == ARROW_RIGHT)
+	else if (keycode == ARROW_RIGHT)
 		fdf->shift_x += 10;
-	if (keycode == ARROW_LEFT)
+	else if (keycode == ARROW_LEFT)
 		fdf->shift_x -= 10;
 }
 
 void	ft_zoom(int keycode, t_fdf *fdf)
 {
 	if (keycode == PLUS)
-		fdf->zoom += 0.5;
-	if (keycode == MINUS && fdf->zoom > 1)
-		fdf->zoom -= 0.5;
+		fdf->zoom += 1;
+	else if (keycode == MINUS && fdf->zoom > 1)
+		fdf->zoom -= 1;
 }
 
 void	ft_rotate(int keycode, t_fdf *fdf)
@@ -70,6 +70,6 @@ void	ft_change_projection(int keycode, t_fdf *fdf)
 		fdf->x_angle = -0.458393;
 		fdf->y_angle = -0.439823;
 		fdf->z_angle = 0;
-		fdf->isometric = 0;	
-	}	
+		fdf->isometric = 0;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: aweissha <aweissha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 15:13:26 by aweissha          #+#    #+#             */
-/*   Updated: 2024/01/07 18:13:59 by aweissha         ###   ########.fr       */
+/*   Updated: 2024/01/12 09:49:14 by aweissha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "../get_next_line/get_next_line.h"
 # include <stdlib.h>
 # include <stdio.h>
-# include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <math.h>
@@ -45,7 +44,6 @@
 # define P 35
 # define ESCAPE 53
 
-
 typedef struct s_dot
 {
 	float	x;
@@ -57,7 +55,7 @@ typedef struct s_dot
 typedef struct s_map
 {
 	int		width;
-	int 	height;
+	int		height;
 	t_dot	**matrix;
 }	t_map;
 
@@ -84,6 +82,7 @@ typedef struct s_fdf
 t_fdf	*ft_create_fdf(char *filename);
 void	ft_free_fdf(t_fdf *fdf);
 void	ft_error(char *message);
+void	ft_free_and_error(char *message, t_fdf *fdf);
 void	ft_zoom(int keycode, t_fdf *fdf);
 void	ft_put_pixel(t_fdf *fdf, float x, float y, int color);
 int		ft_count_lines(char *filename, t_fdf *fdf);
@@ -105,11 +104,16 @@ void	ft_rotate(int keycode, t_fdf *fdf);
 void	ft_scale_z(int keycode, t_fdf *fdf);
 void	ft_change_projection(int keycode, t_fdf *fdf);
 void	ft_hook_control(t_fdf *fdf);
-int 	ft_key_hook(int keycode, t_fdf *fdf);
-// void	ft_replace_img(t_fdf *fdf);
+int		ft_key_hook(int keycode, t_fdf *fdf);
 void	ft_put_pixel(t_fdf *fdf, float x, float y, int color);
 void	ft_rotate_x(float *y, float *z, double x_angle);
 void	ft_rotate_y(float *x, float *z, double y_angle);
 void	ft_rotate_z(float *x, float *y, double z_angle);
+void	ft_get_color(t_dot *dot, char *str);
+int		ft_atoi_base(const char *str, int str_base);
+float	max(float a, float b);
+float	mod(float i);
+int		ft_min(int a, int b);
+void	ft_set_zoom(t_fdf *fdf);
 
 #endif
